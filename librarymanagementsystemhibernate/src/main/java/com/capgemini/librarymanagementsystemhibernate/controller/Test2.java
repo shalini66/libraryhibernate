@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.capgemini.librarymanagementsystemhibernate.dto.BookBean;
+import com.capgemini.librarymanagementsystemhibernate.dto.RequestBean;
 import com.capgemini.librarymanagementsystemhibernate.dto.UsersBean;
 import com.capgemini.librarymanagementsystemhibernate.factory.AdminFactory;
+import com.capgemini.librarymanagementsystemhibernate.factory.StudentFactory;
 import com.capgemini.librarymanagementsystemhibernate.factory.UsersFactory;
 import com.capgemini.librarymanagementsystemhibernate.service.AdminService;
+import com.capgemini.librarymanagementsystemhibernate.service.StudentService;
 import com.capgemini.librarymanagementsystemhibernate.service.UsersService;
 
 public class Test2 {
@@ -69,7 +72,7 @@ public class Test2 {
 							}while(true);
 						}
 						if(role.equals("student")) {
-							System.out.println("Im student");
+							doStudent();
 						}
 					} else {
 						System.out.println("login failed");
@@ -97,7 +100,9 @@ public class Test2 {
 			System.out.println("Press 6 to remove the Books");
 			System.out.println("Press 7 to Get the Book Id's");
 			System.out.println("Press 8 to Get the Book Information");
-			System.out.println("Press 9 to main");
+			System.out.println("Press 9 to show users");
+			System.out.println("Press 10 to Requests");
+			System.out.println("Press 11 to Main");
 
 			int a = scanner.nextInt();
 			switch (a) {
@@ -205,7 +210,11 @@ public class Test2 {
 				}
 				break;
 			case 7:
-				List<BookBean> list4 = service.getBooksInfo();
+				List<Integer> list4 = service.getBookIds();
+				System.out.println(list4);
+				break;
+			case 8:
+				List<BookBean> list5 = service.getBooksInfo();
 //				for(BookBean bean8 : list4) {
 //					System.out.println(bean8.getBid());
 //					System.out.println(bean8.getBname());
@@ -214,15 +223,147 @@ public class Test2 {
 //					System.out.println(bean8.getPublishername());
 //					System.out.println("--------------------");
 //				}
-				System.out.println(list4);
+				System.out.println(list5);
 				break;
-
 			case 9:
+				List<UsersBean> list = service.showUsers();
+				System.out.println(list);
+				break;
+			case 10:
+				List<RequestBean> list2 = service.showRequests();
+				System.out.println(list2);
+				break;
+			case 11:
 				doReg();
 			default:
 				System.out.println("Invalid Choice");
 				break;
 			}//end of admin methods
 		} while(true); //end of do-while main
-	}
+	}//end of admin
+	
+	
+	
+	public static void doStudent() {
+		StudentService service = StudentFactory.getStudentService();
+		Scanner scanner = new Scanner(System.in);
+		do {
+			System.out.println("Press 1 to Search the Book by bookName");
+			System.out.println("Press 2 to Search the Book by author");
+			System.out.println("Press 3 to Search the Book by Id");
+			System.out.println("Press 4 to Get the Book Id's");
+			System.out.println("Press 5 to Get the Book Information");
+			System.out.println("press 6 to request book");
+			System.out.println("Press 8 to main");
+
+			int a = scanner.nextInt();
+			switch (a) {
+			case 1:
+				System.out.println("Enter book Name");
+				String bookName1 = scanner.next();
+				BookBean bean3 = new BookBean();
+				bean3.setBname(bookName1);
+				BookBean bean = service.searchBookTitle(bookName1);
+				if(bean!=null) {
+					System.out.println(bean.getBid());
+					System.out.println(bean.getBname());
+					System.out.println(bean.getAuthor());
+					System.out.println(bean.getCategory());
+					System.out.println(bean.getPublishername());
+
+				} else {
+					System.out.println("Book Not Found");
+				}
+				break;
+			case 2:
+				System.out.println("Enter Book author");
+				String author = scanner.next();
+				BookBean bean4 = new BookBean();
+				bean4.setAuthor(author);
+				BookBean bean1 = service.searchBookAuthor(author);
+				if(bean1!=null) {
+					System.out.println(bean1.getBid());
+					System.out.println(bean1.getBname());
+					System.out.println(bean1.getAuthor());
+					System.out.println(bean1.getCategory());
+					System.out.println(bean1.getPublishername());
+					//System.out.println(list1);
+				} else {
+					System.out.println("Book Not Found");
+				}
+				break;
+			case 3:
+				System.out.println("Enter Book id");
+				int id = scanner.nextInt();
+				BookBean bean5 = new BookBean();
+				bean5.setBid(id);
+				BookBean bbean = service.searchBookType(id);
+				if(bbean!=null) {
+					System.out.println(bbean.getBid());
+					System.out.println(bbean.getBname());
+					System.out.println(bbean.getAuthor());
+					System.out.println(bbean.getCategory());
+					System.out.println(bbean.getPublishername());
+					//System.out.println(list2);
+				} else {
+					System.out.println("Book Not Found");
+				}
+				break;
+			case 4:
+				List<Integer> list4 = service.getBookIds();
+				System.out.println(list4);
+				break;
+			case 5:
+				List<BookBean> list5 = service.getBooksInfo();
+//				for(BookBean bean8 : list4) {
+//					System.out.println(bean8.getBid());
+//					System.out.println(bean8.getBname());
+//					System.out.println(bean8.getAuthor());
+//					System.out.println(bean8.getCategory());
+//					System.out.println(bean8.getPublishername());
+//					System.out.println("--------------------");
+//				}
+				System.out.println(list5);
+				break;
+				
+			case 6:
+				System.out.println("Enter book id");
+				int bId = scanner.nextInt();
+				BookBean bookBean = new BookBean();
+				bookBean.setBid(bId);
+
+
+				System.out.println("Enter user id");
+				int userId = scanner.nextInt();
+				UsersBean userBean = new UsersBean();
+				userBean.setId(userId);
+
+				RequestBean requestBean = new RequestBean();
+				for(int y=1; y<20; y++) {
+					requestBean.setRid(y);
+				}
+				
+				try {
+					RequestBean request = service.requestBook(userBean, bookBean);
+					System.out.println("Request placed to admin");
+					System.out.println("-----------------------------------");
+					System.out.println("User Id-----" + request.getUsersInfo().getId());
+					System.out.println("User name---" + request.getUsersInfo().getName());
+					System.out.println("Book Id-----" + request.getBookInfo().getBid());
+					System.out.println("Book Name---" + request.getBookInfo().getBname());
+
+				} catch (Exception e) {
+
+					System.out.println("Enter valid data or Invalid Request");
+				}
+				break;
+			case 8:
+				doReg();
+			default:
+				System.out.println("Invalid Choice");
+				break;
+			}//end of student methods
+		} while(true); //end of do-while main
+
+	}//end of student
 }

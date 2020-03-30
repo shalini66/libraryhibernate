@@ -11,65 +11,10 @@ import java.util.List;
 import java.util.Properties;
 
 import com.capgemini.librarymanagementsystemjdbc.dto.BookBean;
-import com.capgemini.librarymanagementsystemjdbc.exception.AdminException;
+import com.capgemini.librarymanagementsystemjdbc.dto.UsersBean;
 import com.capgemini.librarymanagementsystemjdbc.exception.BookException;
 
 public class StudentDAOImp implements StudentDAO{
-
-//	@Override
-//	public boolean register(StudentBean info) {
-//		try(FileInputStream	fin = new FileInputStream("dburl.properties")){
-//
-//			Properties pro = new Properties();
-//			pro.load(fin);
-//
-//			Class.forName(pro.getProperty("path")).newInstance();
-//			try(Connection conn = DriverManager.getConnection(pro.getProperty("dburl"), pro)){
-//				String query = pro.getProperty("register_student");
-//				try(PreparedStatement pstmt = conn.prepareStatement(query)){
-//					
-//					pstmt.setInt(1, info.getSid());
-//					pstmt.setString(2, info.getSname());
-//					pstmt.setLong(3, info.getMobile());
-//					pstmt.setString(4, info.getSemail());
-//					pstmt.setString(5, info.getPassword());
-//					int count = pstmt.executeUpdate();
-//				} throw new AdminException("invalid email and password");
-//			}
-//		} catch(Exception e) {
-//			e.printStackTrace();
-//		}
-//		return false;
-//	}
-//
-//	@Override
-//	public StudentBean auth(String email, String password) {
-//		StudentBean bean = new StudentBean(); 
-//		try(FileInputStream fin = new FileInputStream("dburl.properties")){
-//			Properties pro = new Properties();
-//			pro.load(fin);
-//			Class.forName(pro.getProperty("path")).newInstance();
-//			try(Connection conn = DriverManager.getConnection(pro.getProperty("dburl"), pro)){
-//				String query = pro.getProperty("auth_student");
-//				try(PreparedStatement pstmt = conn.prepareStatement(query)){ 
-//					pstmt.setString(1, email);
-//					pstmt.setString(2, password); 
-//
-//					ResultSet rs = pstmt.executeQuery();
-//					if(rs.next()) {
-//						if(rs.equals(bean.getSemail().equals(email)&&bean.getPassword().equals(password))/*bean.getSemail().equals(email) && bean.getPassword().equals(password)*//*bean2.contains(email.equals(email)) && password.equals(password)*//*bean.getEmail().equals(email)&&bean.getPassword().equals(password)*//*bean2.contains(bean.getEmail().equals(email)&&bean.getPassword().equals(password))*/){
-//							System.out.println("login successful");
-//							return bean;
-//						}
-//					}
-//					throw new AdminException("invalid email and password");	
-//				} 
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return bean;
-//	}
 
 	public BookBean searchBookTitle(String bname) {
 		BookBean bean = new BookBean();
@@ -181,7 +126,7 @@ public class StudentDAOImp implements StudentDAO{
 						BookBean bean = new BookBean();
 						bean.setBid(rs.getInt("bid"));		
 					}
-					
+
 				}
 			}
 
@@ -224,16 +169,22 @@ public class StudentDAOImp implements StudentDAO{
 	}
 
 	@Override
-	public boolean requestBook(int bid, String author) {
+	public boolean requestBook(UsersBean student, BookBean book) {
 		try(FileInputStream	fin = new FileInputStream("dburl.properties")){
 
 			Properties pro = new Properties();
 			pro.load(fin);
+
 			Class.forName(pro.getProperty("path")).newInstance();
 			try(Connection conn = DriverManager.getConnection(pro.getProperty("dburl"), pro)){
-				String query = "";
-				try(Statement stmt = conn.createStatement()){	
-					ResultSet rs = stmt.executeQuery(query);
+				String query = pro.getProperty("get_allRequests");
+				UsersBean usersBean = new UsersBean();
+				int userId = usersBean.getId();
+				BookBean bookBean = new BookBean();
+				int bookId = bookBean.getBid();
+				try(PreparedStatement pstmt = conn.prepareStatement(query)){
+					ResultSet set = pstmt.executeQuery();
+					
 				}
 			}
 
@@ -245,7 +196,7 @@ public class StudentDAOImp implements StudentDAO{
 	}
 
 	@Override
-	public boolean returnBook(int bid) {
+	public boolean returnBook(UsersBean student, BookBean book) {
 		// TODO Auto-generated method stub
 		return false;
 	}

@@ -3,6 +3,7 @@ package com.capgemini.librarymanagementsystemjdbc.service;
 import java.util.List;
 
 import com.capgemini.librarymanagementsystemjdbc.dto.BookBean;
+import com.capgemini.librarymanagementsystemjdbc.dto.UsersBean;
 
 public interface StudentService {
 	/*
@@ -15,6 +16,6 @@ public interface StudentService {
 	BookBean searchBookType(int bookType);
 	List<BookBean> getBookIds();
 	List<BookBean> getBooksInfo();
-	boolean requestBook(int bid, String author);
-	boolean returnBook(int bid);
+	boolean requestBook(UsersBean student, BookBean book);
+	boolean returnBook(UsersBean student, BookBean book);
 }

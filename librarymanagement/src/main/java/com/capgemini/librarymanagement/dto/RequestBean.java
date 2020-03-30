@@ -46,5 +46,6 @@ public class RequestBean implements Serializable{
 	public void setReturnedDate(LocalDate returnedDate) {
 		this.returnedDate = returnedDate;
 	}
+
 	
 }

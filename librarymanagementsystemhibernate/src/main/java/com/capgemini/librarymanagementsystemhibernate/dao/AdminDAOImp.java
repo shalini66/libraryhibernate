@@ -10,11 +10,9 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-
 import com.capgemini.librarymanagementsystemhibernate.dto.BookBean;
 import com.capgemini.librarymanagementsystemhibernate.dto.RequestBean;
 import com.capgemini.librarymanagementsystemhibernate.dto.UsersBean;
-import com.capgemini.librarymanagementsystemhibernate.exception.BookException;
 
 public class AdminDAOImp implements AdminDAO{
 
@@ -28,11 +26,11 @@ public class AdminDAOImp implements AdminDAO{
 			transaction = manager.getTransaction();
 			transaction.begin();
 			BookBean bean = manager.find(BookBean.class, book.getBid());
-//			if(bean == null) {
-//				System.out.println("Book Added");
-//			} else {
-//				throw new BookException("Book Already Exist");
-//			}
+			//			if(bean == null) {
+			//				System.out.println("Book Added");
+			//			} else {
+			//				throw new BookException("Book Already Exist");
+			//			}
 			manager.persist(book);
 			transaction.commit();
 		} catch (Exception e) {
@@ -78,7 +76,8 @@ public class AdminDAOImp implements AdminDAO{
 			transaction = manager.getTransaction();
 			transaction.begin();
 			BookBean bean = manager.find(BookBean.class, bAuthor);
-			manager.persist(bAuthor);
+			//manager.persist(bAuthor);
+			manager.persist(bean);
 			transaction.commit();
 			return bean;
 		} catch (Exception e) {
@@ -101,7 +100,7 @@ public class AdminDAOImp implements AdminDAO{
 			transaction = manager.getTransaction();
 			transaction.begin();
 			BookBean bean = manager.find(BookBean.class, bid);
-			manager.persist(bid);;
+			manager.persist(bean);
 			transaction.commit();
 			return bean;
 		} catch (Exception e) {
@@ -150,7 +149,7 @@ public class AdminDAOImp implements AdminDAO{
 			manager.remove(bean);
 			//manager.persist(bean);
 			transaction.commit();
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			transaction.rollback();
@@ -164,24 +163,24 @@ public class AdminDAOImp implements AdminDAO{
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("TestPersistence");
 		EntityManager manager = factory.createEntityManager();
 		EntityTransaction transaction = manager.getTransaction();
-		try{
-			
+		try {
 			transaction.begin();
-			//Select all the record from student table
-			Query query = manager.createQuery("select m from bookbean m");
-			List lst = query.getResultList();
-			Iterator it = lst.iterator();
+			String jpql = "select * from bookbean";
+			Query query =  manager.createNativeQuery(jpql, BookBean.class);
+			List<Integer> recordList = query.getResultList();
+			Iterator it = recordList.iterator();
 			while (it.hasNext()){
-			BookBean bean = (BookBean) it.next();
-			System.out.print("Id:"+bean.getBid());
-			System.out.print(" Name:"+bean.getBname());
-			System.out.println(" Author:"+bean.getAuthor());
+				BookBean bean = (BookBean) it.next();
+				System.out.println("----------------------");
+				System.out.println("Id:---"+bean.getBid());
 			}
 			transaction.commit();
-			}
-			catch(Exception e){
-			System.out.println(e.getMessage());
-			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			transaction.rollback();
+		}
+		manager.close();
+		factory.close();
 		return null;
 	}
 
@@ -189,30 +188,115 @@ public class AdminDAOImp implements AdminDAO{
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("TestPersistence");
 		EntityManager manager = factory.createEntityManager();
 		EntityTransaction transaction = manager.getTransaction();
-		transaction.begin();
-		String jpql = "select m from bookbean m";
-		
-		TypedQuery<BookBean> query = manager.createQuery(jpql, BookBean.class);
-		//List<BookBean> recordList = query.getResultList();
-		manager.persist(query);
-		transaction.commit();
+		try {
+			transaction.begin();
+			String jpql = "select * from bookbean";
+			TypedQuery<BookBean> query = (TypedQuery<BookBean>) manager.createNativeQuery(jpql, BookBean.class);
+			List<BookBean> recordList = query.getResultList();
+			Iterator it = recordList.iterator();
+			while (it.hasNext()){
+				BookBean bean = (BookBean) it.next();
+				System.out.println("----------------------");
+				System.out.print("Id:---"+bean.getBid());
+				System.out.print(" Name:---"+bean.getBname());
+				System.out.println(" Author:---"+bean.getAuthor());
+				System.out.println("PublisherName:---"+bean.getPublishername());
+				System.out.println("Category:---"+bean.getCategory());
+			}
+			transaction.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			transaction.rollback();
+		}
 		manager.close();
 		factory.close();
 		return null;
 	}
 
 	public List<UsersBean> showUsers() {
-		// TODO Auto-generated method stub
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("TestPersistence");
+		EntityManager manager = factory.createEntityManager();
+		EntityTransaction transaction = manager.getTransaction();
+		try {
+			transaction.begin();
+			String jpql = "select * from usersbean";
+			TypedQuery<UsersBean> query = (TypedQuery<UsersBean>) manager.createNativeQuery(jpql, UsersBean.class);
+			List<UsersBean> recordList = query.getResultList();
+			Iterator it = recordList.iterator();
+			while (it.hasNext()){
+				UsersBean bean = (UsersBean) it.next();
+				System.out.println("----------------------");
+				System.out.print("Id:---"+bean.getId());
+				System.out.print(" Name:---"+bean.getName());
+				System.out.println(" Email:---"+bean.getEmail());
+				System.out.println("Mobile:---"+bean.getMobile());
+				System.out.println("Role:---"+bean.getRole());
+			}
+			transaction.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			transaction.rollback();
+		}
+		manager.close();
+		factory.close();
 		return null;
 	}
 
 	public List<RequestBean> showRequests() {
-		// TODO Auto-generated method stub
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("TestPersistence");
+		EntityManager manager = factory.createEntityManager();
+		EntityTransaction transaction = manager.getTransaction();
+		try {
+			transaction.begin();
+			String jpql = "select * from requestbean";
+			TypedQuery<RequestBean> query = (TypedQuery<RequestBean>) manager.createNativeQuery(jpql, RequestBean.class);
+			//manager.persist(query);
+			List<RequestBean> recordList = query.getResultList();
+			Iterator it = recordList.iterator();
+			while (it.hasNext()){
+				RequestBean bean = (RequestBean) it.next();
+				System.out.println("----------------------");
+				System.out.print("BookId:---"+bean.getBookInfo().getBid());
+				System.out.print("BookName:---"+bean.getBookInfo().getBname());
+				System.out.println(" UserId:---"+bean.getUsersInfo().getId());
+				System.out.println("UserName:---"+bean.getUsersInfo().getName());
+				manager.persist(bean);
+			}
+			//manager.persist(query);
+			transaction.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			transaction.rollback();
+		}
+		manager.close();
+		factory.close();
 		return null;
 	}
 
 	public boolean bookIssue(UsersBean student, BookBean book) {
-		// TODO Auto-generated method stub
+		EntityManagerFactory factory = null;
+		EntityManager manager = null;
+		EntityTransaction transaction = null;
+		try {
+			factory = Persistence.createEntityManagerFactory("TestPersistence");
+			manager = factory.createEntityManager();
+			transaction = manager.getTransaction();
+			transaction.begin();
+			UsersBean bean = new UsersBean();
+			UsersBean bean2= manager.find(UsersBean.class, bean.getRole());
+			
+			manager.persist(bean2);
+			if(bean2.getRole().equals("student")) {
+				BookBean bookBean = new BookBean();
+			}
+			transaction.commit();
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			transaction.rollback();
+		}
+		manager.close();
+		factory.close();
 		return false;
 	}
 

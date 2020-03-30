@@ -147,8 +147,8 @@ public class AdminDAOImp implements AdminDAO{
 			Properties pro = new Properties(); pro.load(fin);
 
 			//Class.forName(pro.getProperty("path")).newInstance();
-			Class.forName("com.mysql.jdbc.Driver").newInstance(); String dburl=
-					"jdbc:mysql://localhost:3306/library_management_system?user=root&password=root";
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
+			String dburl="jdbc:mysql://localhost:3306/library_management_system?user=root&password=root";
 			try(Connection conn = DriverManager.getConnection(dburl)){
 				/* String query ="update book set bname='chemistry' where bname=?"; */ 
 				String query ="update book set bname=? where bname=?";
@@ -263,12 +263,42 @@ public class AdminDAOImp implements AdminDAO{
 	}
 	@Override
 	public List<RequestBean> showRequests() {
-		// TODO Auto-generated method stub
+		try(FileInputStream	fin = new FileInputStream("dburl.properties")){
+
+			Properties pro = new Properties();
+			pro.load(fin);
+
+			Class.forName(pro.getProperty("path")).newInstance();
+			try(Connection conn = DriverManager.getConnection(pro.getProperty("dburl"), pro)){
+				String query = pro.getProperty("get_allRequests");
+				try(PreparedStatement pstmt = conn.prepareStatement(query)){
+					ResultSet set = pstmt.executeQuery();
+				}
+			}
+
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 	@Override
 	public boolean bookIssue(UsersBean student, BookBean book) {
-		// TODO Auto-generated method stub
+		try(FileInputStream	fin = new FileInputStream("dburl.properties")){
+
+			Properties pro = new Properties();
+			pro.load(fin);
+
+			Class.forName(pro.getProperty("path")).newInstance();
+			try(Connection conn = DriverManager.getConnection(pro.getProperty("dburl"), pro)){
+				String query = pro.getProperty("get_allRequests");
+				try(PreparedStatement pstmt = conn.prepareStatement(query)){
+					ResultSet set = pstmt.executeQuery();
+				}
+			}
+
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 	@Override

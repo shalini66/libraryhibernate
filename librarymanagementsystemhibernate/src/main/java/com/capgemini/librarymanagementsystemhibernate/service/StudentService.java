@@ -3,13 +3,15 @@ package com.capgemini.librarymanagementsystemhibernate.service;
 import java.util.List;
 
 import com.capgemini.librarymanagementsystemhibernate.dto.BookBean;
+import com.capgemini.librarymanagementsystemhibernate.dto.RequestBean;
+import com.capgemini.librarymanagementsystemhibernate.dto.UsersBean;
 
 public interface StudentService {
 	BookBean searchBookTitle(String bname);
 	BookBean searchBookAuthor(String bAuthor);
 	BookBean searchBookType(int bookType);
-	List<BookBean> getBookIds();
+	List<Integer> getBookIds();
 	List<BookBean> getBooksInfo();
-	boolean requestBook(int bid, String author);
-	boolean returnBook(int bid);
+	RequestBean requestBook(UsersBean student, BookBean book);
+	boolean returnBook(UsersBean student, BookBean book);
 }

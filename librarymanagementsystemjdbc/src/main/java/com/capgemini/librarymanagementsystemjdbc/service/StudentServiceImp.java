@@ -5,23 +5,11 @@ import java.util.List;
 
 import com.capgemini.librarymanagementsystemjdbc.dao.StudentDAO;
 import com.capgemini.librarymanagementsystemjdbc.dto.BookBean;
-
+import com.capgemini.librarymanagementsystemjdbc.dto.UsersBean;
 import com.capgemini.librarymanagementsystemjdbc.factory.StudentFactory;
 
 public class StudentServiceImp implements StudentService {
 	private StudentDAO dao = StudentFactory.getStudentDAO();
-
-//	@Override
-//	public boolean register(StudentBean info) {
-//		
-//		return dao.register(info);
-//	}
-//
-//	@Override
-//	public StudentBean auth(String email, String password) {
-//		
-//		return dao.auth(email, password);
-//	}
 
 	@Override
 	public BookBean searchBookTitle(String bname) {
@@ -54,15 +42,15 @@ public class StudentServiceImp implements StudentService {
 	}
 
 	@Override
-	public boolean requestBook(int bid, String author) {
+	public boolean requestBook(UsersBean student, BookBean book) {
 		
-		return dao.requestBook(bid, author);
+		return dao.requestBook(student, book);
 	}
 
 	@Override
-	public boolean returnBook(int bid) {
+	public boolean returnBook(UsersBean student, BookBean book) {
 		
-		return dao.returnBook(bid);
+		return dao.returnBook(student, book);
 	}
 
 }
