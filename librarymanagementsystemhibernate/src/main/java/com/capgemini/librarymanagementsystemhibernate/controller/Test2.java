@@ -6,11 +6,7 @@ import java.util.Scanner;
 import com.capgemini.librarymanagementsystemhibernate.dto.BookBean;
 import com.capgemini.librarymanagementsystemhibernate.dto.RequestBean;
 import com.capgemini.librarymanagementsystemhibernate.dto.UsersBean;
-import com.capgemini.librarymanagementsystemhibernate.factory.AdminFactory;
-import com.capgemini.librarymanagementsystemhibernate.factory.StudentFactory;
 import com.capgemini.librarymanagementsystemhibernate.factory.UsersFactory;
-import com.capgemini.librarymanagementsystemhibernate.service.AdminService;
-import com.capgemini.librarymanagementsystemhibernate.service.StudentService;
 import com.capgemini.librarymanagementsystemhibernate.service.UsersService;
 
 public class Test2 {
@@ -89,7 +85,7 @@ public class Test2 {
 	}//end of doReg
 
 	public static void doAdmin() {
-		AdminService service = AdminFactory.getAdminService();
+		UsersService service = UsersFactory.getUsersService();
 		Scanner scanner = new Scanner(System.in);
 		do {
 			System.out.println("press 1 to add book");
@@ -230,8 +226,8 @@ public class Test2 {
 				System.out.println(list);
 				break;
 			case 10:
-				List<RequestBean> list2 = service.showRequests();
-				System.out.println(list2);
+				//List<RequestBean> list2 = service.showRequest();
+				//System.out.println(list2);
 				break;
 			case 11:
 				doReg();
@@ -245,7 +241,7 @@ public class Test2 {
 	
 	
 	public static void doStudent() {
-		StudentService service = StudentFactory.getStudentService();
+		UsersService service = UsersFactory.getUsersService();
 		Scanner scanner = new Scanner(System.in);
 		do {
 			System.out.println("Press 1 to Search the Book by bookName");
@@ -327,35 +323,7 @@ public class Test2 {
 				break;
 				
 			case 6:
-				System.out.println("Enter book id");
-				int bId = scanner.nextInt();
-				BookBean bookBean = new BookBean();
-				bookBean.setBid(bId);
-
-
-				System.out.println("Enter user id");
-				int userId = scanner.nextInt();
-				UsersBean userBean = new UsersBean();
-				userBean.setId(userId);
-
-				RequestBean requestBean = new RequestBean();
-				for(int y=1; y<20; y++) {
-					requestBean.setRid(y);
-				}
 				
-				try {
-					RequestBean request = service.requestBook(userBean, bookBean);
-					System.out.println("Request placed to admin");
-					System.out.println("-----------------------------------");
-					System.out.println("User Id-----" + request.getUsersInfo().getId());
-					System.out.println("User name---" + request.getUsersInfo().getName());
-					System.out.println("Book Id-----" + request.getBookInfo().getBid());
-					System.out.println("Book Name---" + request.getBookInfo().getBname());
-
-				} catch (Exception e) {
-
-					System.out.println("Enter valid data or Invalid Request");
-				}
 				break;
 			case 8:
 				doReg();

@@ -302,6 +302,7 @@ public class AdminDAOImp implements AdminDAO {
 			noOfBooksBorrowed--;
 			student.setBooksBorrowed(noOfBooksBorrowed);
 			return true;
+
 		}
 
 		return false;
